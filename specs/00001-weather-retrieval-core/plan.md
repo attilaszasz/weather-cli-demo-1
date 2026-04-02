@@ -162,3 +162,12 @@ C4Component
 - **[HINT-003]** Gotcha: `flag` parsing stops at the first non-flag argument, so explicit extra-argument checks are required after parsing.
 - **[HINT-004]** Performance: Reuse a configured `http.Client` with a 3-second timeout instead of per-call transport customization spread across packages.
 - **[HINT-005]** Compatibility: Keep help behavior stable now, but leave version wiring out of E001 so later release/version work can add it without reworking the command seam.
+
+## Local Verification Commands
+
+| Check | Command |
+|-------|---------|
+| Test | `go test ./...` |
+| Coverage | `go test -coverprofile=coverage.out ./...` |
+| Vulnerability scan | `govulncheck ./...` |
+| Lint | `golangci-lint run` |

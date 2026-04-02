@@ -1,23 +1,25 @@
 <!-- template-version: 2 -->
-# [PROJECT_NAME] Project Instructions
+# Weather CLI Project Instructions
 
 ## Core Principles
 
-<!-- 3–7 non-negotiable principles. Each: succinct name, MUST/SHOULD rule, rationale. Add or remove ### blocks as needed. -->
+### I. Simplicity-First Modularity
 
-### I. [PRINCIPLE_NAME]
+Implementation MUST keep the CLI as a small modular Go application with clear package boundaries for command handling, provider integration, contracts, and output behavior — this preserves maintainability and keeps a single-purpose tool from drifting into an over-engineered system.
 
-[PRINCIPLE_RULE] — [PRINCIPLE_RATIONALE]
+### II. Stable CLI Contracts
 
-### II. [PRINCIPLE_NAME]
+The public CLI success and error outputs MUST remain CLI-owned, machine-readable, and backward-compatible by default — this protects automation users from upstream provider churn and makes the tool reliable in scripts.
 
-[PRINCIPLE_RULE] — [PRINCIPLE_RATIONALE]
+### III. Test-Backed Delivery
 
-### III. [PRINCIPLE_NAME]
+Changes MUST ship with `go test` coverage for the touched behavior, including unit and integration tests for provider mapping, contract behavior, and failure paths — this reduces regression risk for a contract-driven CLI with external service dependencies.
 
-[PRINCIPLE_RULE] — [PRINCIPLE_RATIONALE]
+### IV. Automated Release Readiness
 
-### IV. Agent Output Style
+Build, lint, test, and release steps SHOULD be automatable through GitHub Actions and GoReleaser-compatible workflows — this keeps Linux, macOS, and Windows artifacts reproducible and lowers release risk.
+
+### V. Agent Output Style
 
 All agent output MUST be concise and outcome-oriented. This principle supersedes any verbose defaults.
 
@@ -32,31 +34,31 @@ All agent output MUST be concise and outcome-oriented. This principle supersedes
 
 <!-- Downstream phases (Plan, QC, Autopilot) read this section as the authoritative tech-stack reference. -->
 
-- **Language/Runtime**: [e.g., TypeScript 5.x / Node 22, Python 3.12, Rust 1.78, Go 1.22]
-- **Frameworks**: [e.g., Next.js 15, Django 5, Actix-web]
-- **Storage**: [e.g., PostgreSQL 16, Redis 7, SQLite — or "none"]
-- **Infrastructure**: [e.g., Docker, AWS ECS, Vercel, bare metal — or "local only"]
+- **Language/Runtime**: Go 1.24
+- **Frameworks**: Go standard library first, optional Cobra-style CLI layer when justified, GoReleaser for packaging
+- **Storage**: none
+- **Infrastructure**: local CLI runtime, GitHub Actions for CI/CD, GitHub Releases for artifact distribution
 
 ## Testing & Quality Policy
 
 <!-- QC extracts enforcement rules from this section. Use the keywords below so automated checks activate correctly. -->
 <!-- Keywords recognised by QC: lint, static analysis, code quality, coverage, security, vulnerability, OWASP, WCAG, accessibility, benchmark, performance -->
 
-- **Coverage Target**: [e.g., 80% | 100% | none — omit to skip coverage enforcement]
-- **Required QC Categories**: [e.g., linting, security scanning, accessibility — omit categories you do not require]
-- **Test Strategy**: [e.g., Unit + integration; E2E for critical paths; TDD mandatory]
-- **Linting / Formatting**: [e.g., ESLint + Prettier strict, Clippy, Ruff — or "none"]
+- **Coverage Target**: 80%
+- **Required QC Categories**: linting, security scanning, coverage
+- **Test Strategy**: Test-after implementation with unit + integration testing for critical CLI, contract, and provider flows
+- **Linting / Formatting**: golangci-lint, gofmt
 
 ## Source Code Layout
 
-- **Policy**: [ENFORCE_SRC_ROOT | PRESERVE_EXISTING_LAYOUT]
-- **Convention**: [e.g., Source code under /src; tests co-located in __tests__/; config at repo root]
+- **Policy**: ENFORCE_SRC_ROOT
+- **Convention**: Source code under `/src`; internal packages under `/src/internal`; command entrypoints under `/src/cmd`; repository-level config at root
 
 ## Development Workflow
 
-- **Branching**: [e.g., Feature branches from main, squash merge]
-- **Commit Convention**: [e.g., Conventional Commits, free-form]
-- **CI Requirements**: [e.g., All tests pass, lint clean, no type errors before merge]
+- **Branching**: Feature branches from main with squash merge
+- **Commit Convention**: Conventional Commits
+- **CI Requirements**: All tests pass, lint clean, release workflow remains green, no contract-breaking CLI changes without explicit documentation
 
 <!-- Optional: add additional sections below (Security Requirements, Performance Standards, Compliance, etc.) -->
 
@@ -67,6 +69,8 @@ All agent output MUST be concise and outcome-oriented. This principle supersedes
 - All implementations MUST pass the Instructions Check gate during planning.
 - Complexity beyond these principles MUST be justified and documented.
 
-[GOVERNANCE_ADDITIONAL_RULES]
+- Bootstrap document registrations in `.github/sddp-config.md` MUST be preserved unless the user explicitly replaces them.
+- P1 work MUST preserve a demonstrable CLI MVP that accepts coordinates and returns machine-readable weather output.
+- Security-sensitive values such as future API keys MUST be supplied through environment variables or CI secrets and MUST NOT be committed.
 
-**Version**: [INSTRUCTIONS_VERSION] | **Last Amended**: [LAST_AMENDED_DATE]
+**Version**: 1.0.0 | **Last Amended**: 2026-04-02

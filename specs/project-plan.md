@@ -15,7 +15,7 @@ Product: Weather CLI | Created: 2026-04-02 | Status: Draft | Total Epics: 4 (P1:
 
 > Establish the runnable Go CLI skeleton under `/src`, integrate the initial weather provider, and create the reusable seams needed for downstream contract and error work.
 
-- [ ] E001 [P1] [PRODUCT] {PRD:CAP-001}{SAD:ADR-001}{SAD:ADR-002}{SAD:ADR-004} Weather retrieval core — Build the Go CLI foundation under `/src` with explicit flags, Open-Meteo integration, provider abstraction, and baseline command execution.
+- [X] E001 [P1] [PRODUCT] {PRD:CAP-001}{SAD:ADR-001}{SAD:ADR-002}{SAD:ADR-004} Weather retrieval core — Build the Go CLI foundation under `/src` with explicit flags, Open-Meteo integration, provider abstraction, and baseline command execution.
 
 ### Wave 2 — Automation and contracts
 

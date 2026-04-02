@@ -24,7 +24,7 @@
 
 ## Autopilot
 
-**Enabled**: false
+**Enabled**: true
 
 ## Loop Settings
 

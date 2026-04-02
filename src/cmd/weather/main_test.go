@@ -41,21 +41,37 @@ func TestRunHelp(t *testing.T) {
 
 func TestRunValidationFailures(t *testing.T) {
 	tests := []struct {
-		name string
-		args []string
+		name     string
+		args     []string
+		category contract.ErrorCategory
+		exitCode int
 	}{
-		{name: "missing longitude", args: []string{"--latitude", "10"}},
-		{name: "missing latitude", args: []string{"--longitude", "20"}},
-		{name: "latitude out of range", args: []string{"--latitude", "100", "--longitude", "20"}},
-		{name: "longitude out of range", args: []string{"--latitude", "10", "--longitude", "200"}},
-		{name: "extra arg", args: []string{"--latitude", "10", "--longitude", "20", "extra"}},
+		{name: "missing longitude", args: []string{"--latitude", "10"}, category: contract.ErrorCategoryValidation, exitCode: contract.ExitCodeUsage},
+		{name: "missing latitude", args: []string{"--longitude", "20"}, category: contract.ErrorCategoryValidation, exitCode: contract.ExitCodeUsage},
+		{name: "latitude out of range", args: []string{"--latitude", "100", "--longitude", "20"}, category: contract.ErrorCategoryValidation, exitCode: contract.ExitCodeUsage},
+		{name: "longitude out of range", args: []string{"--latitude", "10", "--longitude", "200"}, category: contract.ErrorCategoryValidation, exitCode: contract.ExitCodeUsage},
+		{name: "extra arg", args: []string{"--latitude", "10", "--longitude", "20", "extra"}, category: contract.ErrorCategoryValidation, exitCode: contract.ExitCodeUsage},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, _, err := runCommand(t, tt.args, stubWeatherService{})
+			stdout, stderr, err := runCommand(t, tt.args, stubWeatherService{})
 			if err == nil {
 				t.Fatal("expected validation error")
+			}
+			if stdout.Len() != 0 {
+				t.Fatalf("expected empty stdout, got %q", stdout.String())
+			}
+
+			var payload contract.ErrorResponse
+			if err := json.Unmarshal(stderr.Bytes(), &payload); err != nil {
+				t.Fatalf("expected valid JSON stderr, got %q: %v", stderr.String(), err)
+			}
+			if payload.Category != tt.category {
+				t.Fatalf("unexpected category: %#v", payload)
+			}
+			if payload.ExitCode != tt.exitCode {
+				t.Fatalf("unexpected exit code: %#v", payload)
 			}
 		})
 	}
@@ -89,8 +105,40 @@ func TestRunSuccess(t *testing.T) {
 }
 
 func TestRunReturnsProviderError(t *testing.T) {
-	_, _, err := runCommand(t, []string{"--latitude", "10", "--longitude", "20"}, stubWeatherService{err: errors.New("provider failed")})
+	stdout, stderr, err := runCommand(t, []string{"--latitude", "10", "--longitude", "20"}, stubWeatherService{err: errors.New("provider failed")})
 	if err == nil {
 		t.Fatal("expected provider error")
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected empty stdout, got %q", stdout.String())
+	}
+
+	var payload contract.ErrorResponse
+	if err := json.Unmarshal(stderr.Bytes(), &payload); err != nil {
+		t.Fatalf("expected valid JSON stderr, got %q: %v", stderr.String(), err)
+	}
+	if payload.Category != contract.ErrorCategoryInternal {
+		t.Fatalf("unexpected payload: %#v", payload)
+	}
+	if payload.ExitCode != contract.ExitCodeInternal {
+		t.Fatalf("unexpected payload: %#v", payload)
+	}
+}
+
+func TestRunReturnsTransportProviderError(t *testing.T) {
+	stdout, stderr, err := runCommand(t, []string{"--latitude", "10", "--longitude", "20"}, stubWeatherService{err: errors.New("execute open-meteo request: timeout")})
+	if err == nil {
+		t.Fatal("expected provider error")
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected empty stdout, got %q", stdout.String())
+	}
+
+	var payload contract.ErrorResponse
+	if err := json.Unmarshal(stderr.Bytes(), &payload); err != nil {
+		t.Fatalf("expected valid JSON stderr, got %q: %v", stderr.String(), err)
+	}
+	if payload.Category != contract.ErrorCategoryTransport || payload.ExitCode != contract.ExitCodeDownstream {
+		t.Fatalf("unexpected payload: %#v", payload)
 	}
 }

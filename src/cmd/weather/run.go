@@ -48,7 +48,7 @@ func runWithService(args []string, stdout io.Writer, stderr io.Writer, weatherSe
 	}
 
 	if err := flagSet.Parse(args); err != nil {
-		return err
+		return contract.WriteErrorResponse(stderr, err)
 	}
 
 	if help {
@@ -57,15 +57,15 @@ func runWithService(args []string, stdout io.Writer, stderr io.Writer, weatherSe
 	}
 
 	if err := validation.ValidateArgs(flagSet.Args()); err != nil {
-		return err
+		return contract.WriteErrorResponse(stderr, err)
 	}
 	if err := validation.ValidateCoordinates(latitude, longitude, latitudeSet, longitudeSet); err != nil {
-		return err
+		return contract.WriteErrorResponse(stderr, err)
 	}
 
 	weather, err := weatherService.GetCurrentWeather(context.Background(), latitude, longitude)
 	if err != nil {
-		return err
+		return contract.WriteErrorResponse(stderr, err)
 	}
 
 	return contract.WriteSuccessResponse(stdout, weather)

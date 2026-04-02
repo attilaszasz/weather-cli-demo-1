@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"os"
+
+	"weather-cli-demo-1/src/internal/contract"
 )
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		os.Exit(contract.ExitCode(err))
 	}
 }

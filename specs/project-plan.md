@@ -22,7 +22,7 @@ Product: Weather CLI | Created: 2026-04-02 | Status: Draft | Total Epics: 4 (P1:
 > Establish release automation after the core runtime exists, while parallel contract work turns the provider integration into a stable automation-facing CLI surface.
 
 - [X] E002 [P1] [PRODUCT] {PRD:CAP-002}{SAD:ADR-003} Canonical weather JSON — Normalize provider responses into a stable success schema and emit machine-readable JSON on stdout.
-- [ ] E003 [P1] [PRODUCT] [P] {PRD:CAP-004}{SAD:ADR-003}{SAD:ADR-004} Structured CLI errors — Define validation, downstream, and internal error contracts with stable stderr JSON and exit-code behavior.
+- [X] E003 [P1] [PRODUCT] [P] {PRD:CAP-004}{SAD:ADR-003}{SAD:ADR-004} Structured CLI errors — Define validation, downstream, and internal error contracts with stable stderr JSON and exit-code behavior.
 - [X] E004 [P2] [OPERATIONAL] [P] {PRD:CAP-005}{SAD:ADR-005} Release automation — Add GitHub Actions and GoReleaser automation for Linux, macOS, and Windows release artifacts.
 
 ### Wave 3 — Product surface hardening
@@ -136,10 +136,10 @@ graph LR
 - **Produces (shared)**: `/src/internal/contract` error schema, exit-code mapping, stderr writer behavior, failure-path fixtures and tests
 - **Constraints**: Error output must be stable and machine-readable; stderr must be used for failure payloads; no raw provider internals should leak unsafely
 - **Acceptance criteria**:
-  - [ ] A canonical error JSON contract exists for validation, downstream transport, provider, and internal failures.
-  - [ ] Invalid input fails fast before network activity and returns a deterministic non-zero exit code.
-  - [ ] Downstream and internal failures are emitted to stderr as structured JSON without corrupting stdout.
-  - [ ] Tests cover validation errors, timeout/network failures, provider-response failures, and internal serialization or mapping faults.
+  - [X] A canonical error JSON contract exists for validation, downstream transport, provider, and internal failures.
+  - [X] Invalid input fails fast before network activity and returns a deterministic non-zero exit code.
+  - [X] Downstream and internal failures are emitted to stderr as structured JSON without corrupting stdout.
+  - [X] Tests cover validation errors, timeout/network failures, provider-response failures, and internal serialization or mapping faults.
 - **Specify input**:
   - **Description**: Define Weather CLI failure behavior with structured stderr JSON and stable exit-code semantics for automation users.
   - **Actors**: Automation users, shell scripts, maintainers

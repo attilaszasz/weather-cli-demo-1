@@ -42,7 +42,7 @@ C4Component
         Component(validation, "Validation", "/src/internal/validation", "Checks coordinate presence, ranges, and extra args")
         Component(service, "Weather Service", "/src/internal/service", "Coordinates provider lookup and returns normalized weather data")
         Component(provider, "Open-Meteo Provider", "/src/internal/provider/openmeteo", "Builds HTTPS request, enforces timeout, parses provider JSON")
-        Component(domain, "Internal Weather Model", "/src/internal/service or /src/internal/domain", "Carries normalized fields for downstream formatting")
+        Component(domain, "Internal Weather Model", "/src/internal/service", "Carries normalized fields for downstream formatting")
     }
     System_Ext(api, "Open-Meteo API", "External HTTPS weather provider")
     Rel(user, cmd, "Invokes with flags")

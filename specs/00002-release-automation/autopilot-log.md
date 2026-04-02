@@ -12,3 +12,4 @@
 | 2026-04-02T10:02:00Z | Implement+QC | Halt condition | `real execution blocked` | `goreleaser check` failed because the `goreleaser` executable is not installed locally |
 | 2026-04-02T10:45:00Z | Implement+QC | QC rerun outcome | `permission blocked` | `goreleaser --version` and `goreleaser check` failed with `Access is denied` while starting `C:\Users\Atszasz\go\bin\goreleaser.exe` |
 | 2026-04-02T10:48:00Z | Implement+QC | Exception handling | `defer hosted validation` | User accepted the local GoReleaser blocker and directed final release validation to GitHub Actions execution |
+| 2026-04-02T10:57:00Z | QC | Hosted validation result | `passed` | User confirmed GitHub Actions release execution succeeded, so E004 QC was closed on the hosted validation path |

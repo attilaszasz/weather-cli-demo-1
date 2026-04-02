@@ -3,12 +3,12 @@
 **Feature**: `specs/00002-release-automation/spec.md`  
 **Plan**: `specs/00002-release-automation/plan.md`  
 **Tasks**: `specs/00002-release-automation/tasks.md`  
-**Status**: Halted — environment blocker
+**Status**: Passed
 **Date**: 2026-04-02
 
 ## Summary
 
-Release automation artifacts were created for `E004`, and baseline repository validation succeeded. QC could not be completed truthfully because the local `goreleaser.exe` process could not be started due to a permissions failure.
+Release automation artifacts were created for `E004`, local repository validation succeeded, and hosted GitHub Actions execution confirmed the release workflow works end-to-end. The local `goreleaser.exe` permission issue remained environment-specific and did not block the authoritative hosted validation path.
 
 ## Checks Run
 
@@ -30,7 +30,13 @@ Release automation artifacts were created for `E004`, and baseline repository va
 
 - **Decision**: local GoReleaser execution is accepted as an environment-specific blocker.
 - **Approval**: the user directed validation to continue through GitHub Actions execution.
-- **Effect**: implementation is complete, but QC remains pending until the release workflow is exercised in GitHub Actions.
+- **Effect**: implementation completed locally and QC closure depended on hosted GitHub Actions validation.
+
+## Hosted Validation Outcome
+
+- **CI result**: hosted GitHub Actions validation succeeded for the repository automation path.
+- **Release result**: hosted GitHub Actions release execution confirmed GoReleaser built and published release artifacts successfully.
+- **Tag evidence**: release validation was exercised through the pushed release tag flow.
 
 ## Artifacts Verified
 
@@ -41,12 +47,6 @@ Release automation artifacts were created for `E004`, and baseline repository va
 - `specs/00002-release-automation/plan.md`
 - `specs/00002-release-automation/tasks.md`
 
-## Remaining Validation Path
-
-- Trigger CI in GitHub Actions and confirm `go test ./...` and `go build ./...` succeed in hosted runners.
-- Trigger a tag-based release workflow in GitHub Actions and confirm GoReleaser publishes Linux, macOS, and Windows archives plus checksums.
-- Create `.qc-passed` only after the GitHub Actions release path has passed.
-
 ## Exit Condition
 
-QC is pending hosted validation. `.completed` may exist for implementation closure, but do not create `.qc-passed` until GitHub Actions release automation validation passes.
+QC passed after hosted validation confirmed the GitHub Actions and GoReleaser release path.

@@ -23,7 +23,7 @@ Product: Weather CLI | Created: 2026-04-02 | Status: Draft | Total Epics: 4 (P1:
 
 - [ ] E002 [P1] [PRODUCT] {PRD:CAP-002}{SAD:ADR-003} Canonical weather JSON — Normalize provider responses into a stable success schema and emit machine-readable JSON on stdout.
 - [ ] E003 [P1] [PRODUCT] [P] {PRD:CAP-004}{SAD:ADR-003}{SAD:ADR-004} Structured CLI errors — Define validation, downstream, and internal error contracts with stable stderr JSON and exit-code behavior.
-- [ ] E004 [P2] [OPERATIONAL] [P] {PRD:CAP-005}{SAD:ADR-005} Release automation — Add GitHub Actions and GoReleaser automation for Linux, macOS, and Windows release artifacts.
+- [X] E004 [P2] [OPERATIONAL] [P] {PRD:CAP-005}{SAD:ADR-005} Release automation — Add GitHub Actions and GoReleaser automation for Linux, macOS, and Windows release artifacts.
 
 ### Wave 3 — Product surface hardening
 
@@ -161,10 +161,10 @@ graph LR
 - **Produces (shared)**: `.github/workflows/release.yml`, CI test workflow, `.goreleaser.yaml`, release artifact naming rules, checksums
 - **Constraints**: Must target Linux, macOS, and Windows; must rely on GitHub Actions; must use GoReleaser for packaging; should preserve future room for signing and SBOM additions
 - **Acceptance criteria**:
-  - [ ] GitHub Actions runs the project’s test command on repository changes and on release preparation paths.
-  - [ ] A tag-triggered release workflow uses GoReleaser to build and publish Linux, macOS, and Windows artifacts.
-  - [ ] Release outputs include archives and checksums with deterministic naming.
-  - [ ] Release automation documentation or workflow comments are sufficient for maintainers to cut a release reliably.
+  - [X] GitHub Actions runs the project’s test command on repository changes and on release preparation paths.
+  - [X] A tag-triggered release workflow uses GoReleaser to build and publish Linux, macOS, and Windows artifacts.
+  - [X] Release outputs include archives and checksums with deterministic naming.
+  - [X] Release automation documentation or workflow comments are sufficient for maintainers to cut a release reliably.
 - **Specify input**:
   - **Description**: Add automated cross-platform packaging and GitHub release publishing for the working Weather CLI executable.
   - **Actors**: Engineering maintainer, GitHub Actions, end users

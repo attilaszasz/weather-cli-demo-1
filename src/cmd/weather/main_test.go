@@ -3,10 +3,12 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"strings"
 	"testing"
 
+	"weather-cli-demo-1/src/internal/contract"
 	"weather-cli-demo-1/src/internal/provider"
 )
 
@@ -60,14 +62,29 @@ func TestRunValidationFailures(t *testing.T) {
 }
 
 func TestRunSuccess(t *testing.T) {
-	stdout, _, err := runCommand(t, []string{"--latitude", "10", "--longitude", "20"}, stubWeatherService{
+	stdout, stderr, err := runCommand(t, []string{"--latitude", "10", "--longitude", "20"}, stubWeatherService{
 		weather: provider.WeatherData{Temperature: 20.5, WindSpeed: 4.1, WeatherCode: 2, ObservationTime: "2026-04-02T10:00"},
 	})
 	if err != nil {
 		t.Fatalf("run returned error: %v", err)
 	}
-	if !strings.Contains(stdout.String(), "Temperature:20.5") {
-		t.Fatalf("unexpected stdout: %q", stdout.String())
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
+	}
+
+	var payload contract.SuccessResponse
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("expected valid JSON stdout, got %q: %v", stdout.String(), err)
+	}
+
+	expected := contract.SuccessResponse{
+		Temperature:     20.5,
+		WindSpeed:       4.1,
+		WeatherCode:     2,
+		ObservationTime: "2026-04-02T10:00",
+	}
+	if payload != expected {
+		t.Fatalf("unexpected payload: %#v", payload)
 	}
 }
 

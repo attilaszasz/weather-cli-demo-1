@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 
+	"weather-cli-demo-1/src/internal/contract"
 	"weather-cli-demo-1/src/internal/provider"
 	"weather-cli-demo-1/src/internal/provider/openmeteo"
 	"weather-cli-demo-1/src/internal/service"
@@ -67,6 +68,5 @@ func runWithService(args []string, stdout io.Writer, stderr io.Writer, weatherSe
 		return err
 	}
 
-	_, err = fmt.Fprintf(stdout, "%+v\n", weather)
-	return err
-}
+	return contract.WriteSuccessResponse(stdout, weather)
+	}

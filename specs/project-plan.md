@@ -21,7 +21,7 @@ Product: Weather CLI | Created: 2026-04-02 | Status: Draft | Total Epics: 4 (P1:
 
 > Establish release automation after the core runtime exists, while parallel contract work turns the provider integration into a stable automation-facing CLI surface.
 
-- [ ] E002 [P1] [PRODUCT] {PRD:CAP-002}{SAD:ADR-003} Canonical weather JSON — Normalize provider responses into a stable success schema and emit machine-readable JSON on stdout.
+- [X] E002 [P1] [PRODUCT] {PRD:CAP-002}{SAD:ADR-003} Canonical weather JSON — Normalize provider responses into a stable success schema and emit machine-readable JSON on stdout.
 - [ ] E003 [P1] [PRODUCT] [P] {PRD:CAP-004}{SAD:ADR-003}{SAD:ADR-004} Structured CLI errors — Define validation, downstream, and internal error contracts with stable stderr JSON and exit-code behavior.
 - [X] E004 [P2] [OPERATIONAL] [P] {PRD:CAP-005}{SAD:ADR-005} Release automation — Add GitHub Actions and GoReleaser automation for Linux, macOS, and Windows release artifacts.
 
@@ -111,10 +111,10 @@ graph LR
 - **Produces (shared)**: `/src/internal/contract` success schema, stdout JSON writer, contract tests, example payload fixtures
 - **Constraints**: Output contract must be CLI-owned and stable; successful command output must be valid parseable JSON on stdout only; changes should favor additive evolution
 - **Acceptance criteria**:
-  - [ ] A canonical success JSON contract is defined independently from the raw provider schema.
-  - [ ] The CLI emits success payloads to stdout only, with no diagnostic contamination in default mode.
-  - [ ] Provider-derived values are normalized consistently into the documented success contract.
-  - [ ] Contract and integration tests verify valid parseable JSON and stable field mapping for successful requests.
+  - [X] A canonical success JSON contract is defined independently from the raw provider schema.
+  - [X] The CLI emits success payloads to stdout only, with no diagnostic contamination in default mode.
+  - [X] Provider-derived values are normalized consistently into the documented success contract.
+  - [X] Contract and integration tests verify valid parseable JSON and stable field mapping for successful requests.
 - **Specify input**:
   - **Description**: Define the public JSON success contract for Weather CLI and map provider data into that stable stdout response.
   - **Actors**: Automation users and scripts consuming CLI output

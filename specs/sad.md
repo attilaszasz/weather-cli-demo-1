@@ -256,3 +256,6 @@ Operational ownership is lightweight: maintain source, tests, and release automa
 - Recommended initial stack is Go 1.24, Open-Meteo integration, and GitHub Actions with GoReleaser for release automation.
 - The public CLI surface should expose a CLI-owned canonical JSON contract rather than raw provider JSON.
 - All project source code should live under `/src` with package boundaries for command handling, provider integration, contracts, and output policy.
+- The E001 planning baseline uses Go standard-library-first flag parsing for the initial CLI command surface, with heavier CLI frameworks deferred unless later scope justifies them.
+- Provider-facing integration tests should prefer `go test` with `net/http/httptest` over live network calls to keep validation deterministic.
+- Recommended Go quality baseline is `golangci-lint` for linting, `govulncheck` for vulnerability scanning, and coverage measurement via `go test -coverprofile`.
